@@ -24,6 +24,7 @@ class DockScreen extends StatefulWidget {
 }
 
 class _DockScreenState extends State<DockScreen> {
+  // List of icon to be shown in nav bar
   List<IconData> dockItems = [
     Icons.person,
     Icons.message,
@@ -32,11 +33,14 @@ class _DockScreenState extends State<DockScreen> {
     Icons.photo,
   ];
 
+// track the index of currently dragged item
   int? draggingIndex;
+  // keeps track of indices where the mouse is havering
   Set<int> hoveredIndices = {};
 
   @override
   Widget build(BuildContext context) {
+    // dimension of dock or nav bar
     final screenHeight = MediaQuery.of(context).size.height;
     final dockHeight = 100.0;
     final bottomPadding = MediaQuery.of(context).padding.bottom;
@@ -47,6 +51,7 @@ class _DockScreenState extends State<DockScreen> {
           final globalOffset = details.offset.dy;
           final dockTopLimit = screenHeight - dockHeight - bottomPadding;
 
+//        to remove is icon is ouside the nav bar
           if (globalOffset < dockTopLimit) {
             setState(() {
               dockItems.removeAt(details.data);
@@ -72,16 +77,18 @@ class _DockScreenState extends State<DockScreen> {
                     left: 16,
                     right: 16,
                   ),
+                  // the icon design
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     color: Colors.black12,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,//center the icon in nav bar or dock
                     children: List.generate(dockItems.length, (index) {
                       final icon = dockItems[index];
                       return MouseRegion(
+                        // Track the mouse 
                         onEnter: (_) => setState(() => hoveredIndices.add(index)),
                         onExit: (_) => setState(() => hoveredIndices.remove(index)),
                         child: Draggable<int>(
