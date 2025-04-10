@@ -27,8 +27,10 @@ class SquareAnimation extends StatefulWidget {
 }
 
 class SquareAnimationState extends State<SquareAnimation> with SingleTickerProviderStateMixin {
+  // This store the size of box
   static const _squareSize = 50.0;
 
+  // Here xpos store the position of box on display and leftLimit and rightLimit is display dimension
   double xpos = 0;
   late double leftlimit;
   late double rightlimit;
@@ -47,7 +49,8 @@ class SquareAnimationState extends State<SquareAnimation> with SingleTickerProvi
     controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     animation = Tween<double>(begin: 0, end: 0).animate(controller);
   }
-
+  
+// This for find the size of display to adjustable to it 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -117,6 +120,7 @@ class SquareAnimationState extends State<SquareAnimation> with SingleTickerProvi
           ),
         ),
         const SizedBox(height: 16),
+        // This is Left Button and used to direct the box to left side of screen
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -133,6 +137,7 @@ class SquareAnimationState extends State<SquareAnimation> with SingleTickerProvi
               ),
             ),
             const SizedBox(width: 8),
+            // This is right button and direct the box to right side of screen 
             MouseRegion(
               onEnter: (_) => setState(() => isHoveringRight = true),
               onExit: (_) => setState(() => isHoveringRight = false),
