@@ -36,21 +36,26 @@ class SquareAnimationState extends State<SquareAnimation> with SingleTickerProvi
   late double rightlimit;
   bool isMoving = false;
 
+  // To
   late AnimationController controller;
+
+  // box movement from one postion to another
   late Animation<double> animation;
 
-  // For hover states
+  // For hover states or on which button we hover
   bool isHoveringLeft = false;
   bool isHoveringRight = false;
 
   @override
   void initState() {
     super.initState();
+    // set the time interval in movement
     controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    // start the movement
     animation = Tween<double>(begin: 0, end: 0).animate(controller);
   }
   
-// This for find the size of display to adjustable to it 
+// find the size of display to adjustable to it 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -59,20 +64,24 @@ class SquareAnimationState extends State<SquareAnimation> with SingleTickerProvi
     rightlimit = -((screenWidth / 2) - _squareSize / 2);
   }
 
+// Move the box to right side with animation
   void moveRight() async {
     setState(() {
       isMoving = true;
       animation = Tween<double>(begin: xpos, end: rightlimit)
           .animate(CurvedAnimation(parent: controller, curve: Curves.bounceOut));
     });
+    // start
     controller.forward(from: 0);
+    // wait for movement to complete
     await Future.delayed(const Duration(seconds: 1));
+    // final postion update and reset movement;
     setState(() {
       xpos = rightlimit;
       isMoving = false;
     });
   }
-
+// move the box to left ise and uses same logic as above
   void _moveLeft() async {
     setState(() {
       isMoving = true;
@@ -88,15 +97,10 @@ class SquareAnimationState extends State<SquareAnimation> with SingleTickerProvi
   }
 
   @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // showing the bouncing square
         SizedBox(
           height: 200,
           child: Center(
@@ -108,6 +112,7 @@ class SquareAnimationState extends State<SquareAnimation> with SingleTickerProvi
                   child: child,
                 );
               },
+              // 
               child: Container(
                 width: _squareSize,
                 height: _squareSize,
